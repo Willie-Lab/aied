@@ -1,4 +1,5 @@
 
+#!/usr/bin/env python3
 
 # libraries
 from __future__ import print_function, division
@@ -33,7 +34,7 @@ import joblib
 import csv
 import warnings
 warnings.filterwarnings('ignore')
-%matplotlib inline
+#%matplotlib inline
 
 
 ### 1. LOAD DATA:
