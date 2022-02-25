@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib as mpl
 mpl.use('TkAgg')
 import matplotlib.pyplot as plt
-from mne import io, read_proj, read_selection
+from mne import io, read_proj, read_vectorview_selection
 from mne.datasets import sample
 from mne.time_frequency import psd_multitaper
 import re 
