@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 
 ### libraries
 import pandas as pd
@@ -13,7 +13,7 @@ from mne.time_frequency import psd_multitaper
 import re 
 from scipy import stats
 from time import time
-%matplotlib inline
+#%matplotlib inline
 import warnings
 warnings.filterwarnings('ignore')
 
