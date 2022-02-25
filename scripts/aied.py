@@ -1,8 +1,8 @@
-
 #!/usr/bin/env python3
 
 # libraries
 from __future__ import print_function, division
+import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -40,11 +40,11 @@ warnings.filterwarnings('ignore')
 ### 1. LOAD DATA:
 
 ### Manual inputs (denoted by #-markers throughout):
-subject = 'tester1' ###### CHANGE: subject name (make sure name does NOT have "_" in it; used for subject col and exportname)
-eegfileloading = 'sample_eegdata.csv' ############################################################### CHANGE: filename here
+subject = sys.argv[1] ###### CHANGE: subject name (make sure name does NOT have "_" in it; used for subject col and exportname)
+eegfileloading = 'sub-'+subject+'_eegdata.csv' ############################################################### CHANGE: filename here
 
 ### LOAD EEG DATA --- rows = channels, cols = timepoints
-eegdir = os.getcwd() ################################################################################ CHANGE: dir here
+eegdir = sys.argv[2] ################################################################################ CHANGE: dir here
 # load file, checking for header
 input_csv_file = eegdir+'/'+eegfileloading
 with open(input_csv_file, 'rb') as csvfile:
@@ -367,7 +367,7 @@ spectimgs(data, spikes)
 ### 5. ResNet-18 CNN DETECTOR:
 
 ### A: LOAD ALL DATA --- extract clip_id from path
-model_dir = eegdir+"/" # dir with trained model ################################################## CHANGE: dir here
+model_dir = os.path.dirname(os.path.abspath(__file__))+"/../" # dir with trained model ################################################## CHANGE: dir here
 proj_dir = eegdir+"/" # dir with main project script ############################################# CHANGE: dir here
 imgs = 'SPECTS' # dir with IED / NONIED image dirs (name of subdir)
 
@@ -479,7 +479,7 @@ def dataCleaner(df, samp_freq = spikes.fs.values[0], win = 3):
 finaldf = dataCleaner(df)
 
 ### export as .csv
-finaldf.to_csv(proj_dir+subject+'_finalspikes.csv', encoding='utf-8', index=False) ############################ CHANGE: export name
+finaldf.to_csv(proj_dir+'sub-'+subject+'_finalspikes.csv', encoding='utf-8', index=False) ############################ CHANGE: export name
 print(finaldf[:3])
 print("")
 print("FINAL SPIKES DETECTED = ", len(finaldf))
