@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 ### libraries
+import sys
+import os
 import pandas as pd
 import mne
 import numpy as np
@@ -21,8 +23,8 @@ warnings.filterwarnings('ignore')
 ### 1. LOAD DATA:
 
 # Load iEEG file
-subject = "tester1" ################################################## CHANGE: SUBJECT NAME USED FOR EXPORT
-pathEDF = './sampledata.EDF' ######################################### CHANGE: FILE PATH/NAME 
+subject = sys.argv[1] ################################################## CHANGE: SUBJECT NAME USED FOR EXPORT
+pathEDF = sys.argv[2] ######################################### CHANGE: FILE PATH/NAME 
 raw = mne.io.read_raw_edf(pathEDF, preload=True)
 mne.set_log_level("WARNING")
 
@@ -106,8 +108,12 @@ picks = cleaner(raw)
 
 ### EXPORT DATA:
 # export picks as .csv 
+folderpathOutput=sys.argv[3]
+if not os.path.isdir(folderpathOutput):
+	os.mkdir(folderpathOutput)
+
 header = ','.join(picks.ch_names)
-np.savetxt('./'+subject+'_eegdata.csv', picks.get_data().T, delimiter=',', header=header) ### ---> spike detection
+np.savetxt(folderpathOutput+'/sub-'+subject+'_eegdata.csv', picks.get_data().T, delimiter=',', header=header) ### ---> spike detection
 
 
 
