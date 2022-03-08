@@ -16,6 +16,7 @@ import re
 from scipy import stats
 from time import time
 #%matplotlib inline
+import csv
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -25,7 +26,16 @@ warnings.filterwarnings('ignore')
 # Load iEEG file
 subject = sys.argv[1] ################################################## CHANGE: SUBJECT NAME USED FOR EXPORT
 pathEDF = sys.argv[2] ######################################### CHANGE: FILE PATH/NAME 
-raw = mne.io.read_raw_edf(pathEDF, preload=True)
+
+#retrive list of channels to exclude:
+ch_exclude_path = sys.argv[3] #path to txt file with list of bad channels
+file=open(ch_exclude_path,'r')
+csv_reader=csv.reader(file)
+ch_exclude=[];
+for row in csv_reader:
+    ch_exclude.append(row[0])
+
+raw = mne.io.read_raw_edf(pathEDF, preload=True, exclude=ch_exclude)
 mne.set_log_level("WARNING")
 
 # iEEG file info:
@@ -84,14 +94,14 @@ def cleaner(raw):
         bad_chs = [raw.ch_names[i] for i in np.where(ch_x.mask)[0]]
         return (bad_chs)
     # Find the first index of the super-bad channels
-    endIndex = 1
-    for i, name in enumerate(raw.info['ch_names']): # can add new logic to reject other channels that are definitely bad
-        if len(re.compile(r'C\d{3}').findall(name)) > 0:
-            endIndex = i
-            break
-    bad_chs = raw.ch_names[endIndex:]
-    bad_chs.extend(check_bads_adaptive(raw, list(range(0,endIndex)), thresh=3)) 
-    raw.info['bads'] = bad_chs
+#    endIndex = 1
+#    for i, name in enumerate(raw.info['ch_names']): # can add new logic to reject other channels that are definitely bad
+#        if len(re.compile(r'C\d{3}').findall(name)) > 0:
+#            endIndex = i
+#            break
+#    bad_chs = raw.ch_names[endIndex:]
+#    bad_chs.extend(check_bads_adaptive(raw, list(range(0,endIndex)), thresh=3)) 
+#    raw.info['bads'] = bad_chs
     #     print(bad_chs)
     #     print(len(raw.info['bads'])) # check which channels are marked as bad
     ### PICK ONLY GOOD CHANNELS:
@@ -108,7 +118,7 @@ picks = cleaner(raw)
 
 ### EXPORT DATA:
 # export picks as .csv 
-folderpathOutput=sys.argv[3]
+folderpathOutput=sys.argv[4]
 if not os.path.isdir(folderpathOutput):
 	os.mkdir(folderpathOutput)
 
