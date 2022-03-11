@@ -403,6 +403,14 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 path_names = []
 for images,labels,paths in dataloaders[imgs]:
     path_names.append(paths)
+
+#in windows, have back-slashes and so need to convert them to forward-slashes:
+if sys.platform=='win32':
+    for it in range(len(path_names)):
+        temp=list(path_names[it])
+        temp[0]=re.sub('\\\\','/',temp[0])
+        path_names[it]=tuple(temp)
+
 # convert list of paths to dataframe col
 df = pd.DataFrame(path_names)
 df.columns = ['clip_ids']
