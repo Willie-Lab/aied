@@ -1,2 +1,4 @@
 
 notebooks/.ipynb_checkpoints/preprocessing-checkpoint.ipynb
+.DS_Store
+*.ipynb
