@@ -475,7 +475,7 @@ def dataCleaner(df, samp_freq = spikes.fs.values[0], win = 0.5):
     chanlist = df.groupby(spikebins)['chan'].apply(lambda x: x.values.tolist())
     chanlist = [list(set(x)) for x in chanlist]
     chancounts = [len(l) for l in chanlist]
-    meanspikestart = (cleandf['mean']).astype(int)
+    meanspikestart = (cleandf['min']).astype(int)
     subjectid = [subject]*len(meanspikestart)
     ### reformat into new df
     finaldf = pd.DataFrame({'subject': subjectid, 'spikeStart': meanspikestart, 
