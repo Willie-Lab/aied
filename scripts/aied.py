@@ -454,7 +454,7 @@ df['predicted_class'] = y_pred_flat
 
 # 6. CLEAN SPIKE DF FOR EXPORT:
 
-def dataCleaner(df, samp_freq = spikes.fs.values[0], win = 3): 
+def dataCleaner(df, samp_freq = spikes.fs.values[0], win = 0.5): 
     """
     CLEANS SPIKE DATA FOR EXPORT
     INPUT: df from resnet model, win = number of seconds allowed for spike overlap 
