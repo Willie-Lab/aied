@@ -486,6 +486,12 @@ def dataCleaner(df, samp_freq = spikes.fs.values[0], win = 0.5):
 
 finaldf = dataCleaner(df)
 
+#also save raw data about spikes:
+df['start'] = df['start'].astype(int) # convert from str to int
+### sort start times in df:
+df = df.sort_values(by = 'start', ascending = True)
+df.to_csv(proj_dir+'sub-'+subject+'_allspikes.csv', encoding='utf-8', index=False)
+
 ### export as .csv
 finaldf.to_csv(proj_dir+'sub-'+subject+'_finalspikes.csv', encoding='utf-8', index=False) ############################ CHANGE: export name
 print(finaldf[:3])
